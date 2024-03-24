@@ -162,7 +162,7 @@ class EnOceanGateway:
                 target_temperature = event.data.get("target_temperature")
                 current_temperature = event.data.get("current_temperature")
                 if target_temperature and current_temperature is not None:
-                    message = A5_10_06(A5_10_06.Heater_Mode.NORMAL, round(target_temperature), round(current_temperature), False).encode_message(sender_address)
+                    message = A5_10_06(A5_10_06.Heater_Mode.NORMAL, target_temperature, current_temperature, False).encode_message(sender_address)
 
             if message is not None:
                 self.send_message(message)
