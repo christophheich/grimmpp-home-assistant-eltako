@@ -149,7 +149,7 @@ class EnOceanGateway:
         sender_id = event.data.get("id")
         sender_eep = event.data.get("eep")
         if sender_id and sender_eep is not None:
-            sender_address = AddressExpression((0xFF, 0x82, 0x3E, 0x04))
+            sender_address = AddressExpression.parse(sender_id)[0]
             message = None
 
             if (A5_38_08.eep_string == sender_eep):
@@ -162,7 +162,7 @@ class EnOceanGateway:
                 target_temperature = event.data.get("target_temperature")
                 current_temperature = event.data.get("current_temperature")
                 if target_temperature and current_temperature is not None:
-                    message = A5_10_06(A5_10_06.Heater_Mode.NORMAL, target_temperature, current_temperature, False).encode_message(sender_address)
+                    message = A5_10_06(A5_10_06.Heater_Mode.NORMAL, round(target_temperature), round(current_temperature), False).encode_message(sender_address)
 
             if message is not None:
                 self.send_message(message)
